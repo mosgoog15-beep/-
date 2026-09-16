@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>อยากรู้ท่องเที่ยวกาญ - เปิดโลกการเดินทางในแบบของเรา</title>
+    
+    <!-- Google Fonts: Kanit and Prompt -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#0284c7',
+                            lightBlue: '#0ea5e9',
+                            sky: '#e0f2fe',
+                            green: '#10b981',
+                            accent: '#f59e0b',
+                            dark: '#0f172a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Kanit', 'Prompt', 'sans-serif'],
+                        heading: ['Prompt', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Style Sheet inside HTML -->
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        /* Glassmorphism styling */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Card Hover Animations */
+        .travel-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .travel-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Modal Animation */
+        .modal-enter {
+            animation: fadeInModal 0.25s ease-out forwards;
+        }
+        @keyframes fadeInModal {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Hero Overlay Gradient */
+        .hero-gradient {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.6) 0%, rgba(15, 23, 42, 0.75) 100%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0284c7;
+        }
+    </style>
+</head>
+<body class="antialiased text-slate-700 flex flex-col min-h-screen">
+
+    <!-- ส่วนที่ 1: Header & Navigation Bar -->
+    <header class="sticky top-0 z-40 w-full glass-nav border-b border-slate-200/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-emerald-400 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+                        <i class="fa-solid me-0.5 fa-compass text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl sm:text-2xl font-bold font-heading text-slate-800 tracking-tight group-hover:text-sky-600 transition-colors">
+                            อยากรู้ท่องเที่ยวกาญ
+                        </span>
+                        <span class="hidden sm:inline-block text-xs text-sky-600 font-medium bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200 ml-2">
+                            เที่ยวบ้านเรา
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <a href="#hero" class="px-4 py-2 rounded-lg text-slate-600 hover:text-sky-600 hover:bg-sky-50 text-sm font-medium transition-all">หน้าแรก</a>
+                    <a href="#attractions" class="px-4 py-2 rounded-lg text-slate-600 hover:text-sky-600 hover:bg-sky-50 text-sm font-medium transition-all">สถานที่ท่องเที่ยว</a>
+                    <a href="#food" class="px-4 py-2 rounded-lg text-slate-600 hover:text-sky-600 hover:bg-sky-50 text-sm font-medium transition-all">อาหารท้องถิ่น</a>
+                    <a href="#tips" class="px-4 py-2 rounded-lg text-slate-600 hover:text-sky-600 hover:bg-sky-50 text-sm font-medium transition-all">เคล็ดลับเดินทาง</a>
+                    <a href="#author" class="px-4 py-2 rounded-lg text-slate-600 hover:text-sky-600 hover:bg-sky-50 text-sm font-medium transition-all">ผู้จัดทำ</a>
+                </nav>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="flex md:hidden">
+                    <button id="mobile-menu-btn" type="button" class="inline-flex items-center justify-center p-2 rounded-lg text-slate-600 hover:text-sky-600 hover:bg-sky-50 focus:outline-none" aria-label="เปิดเมนู">
+                        <i id="hamburger-icon" class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-4 space-y-1 shadow-lg">
+            <a href="#hero" class="mobile-link block px-3 py-2 rounded-lg text-slate-700 hover:bg-sky-50 hover:text-sky-600 font-medium">หน้าแรก</a>
+            <a href="#attractions" class="mobile-link block px-3 py-2 rounded-lg text-slate-700 hover:bg-sky-50 hover:text-sky-600 font-medium">สถานที่ท่องเที่ยว</a>
+            <a href="#food" class="mobile-link block px-3 py-2 rounded-lg text-slate-700 hover:bg-sky-50 hover:text-sky-600 font-medium">อาหารท้องถิ่น</a>
+            <a href="#tips" class="mobile-link block px-3 py-2 rounded-lg text-slate-700 hover:bg-sky-50 hover:text-sky-600 font-medium">เคล็ดลับเดินทาง</a>
+            <a href="#author" class="mobile-link block px-3 py-2 rounded-lg text-slate-700 hover:bg-sky-50 hover:text-sky-600 font-medium">ผู้จัดทำ</a>
+        </div>
+    </header>
+
+    <!-- ส่วนที่ 2: Hero Section -->
+    <section id="hero" class="relative min-h-[85vh] flex items-center justify-center bg-slate-900 text-white overflow-hidden">
+        <!-- Background Image with Fallback Pattern -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80" 
+                 alt="ธรรมชาติเมืองกาญจนบุรี" 
+                 class="w-full h-full object-cover object-center transform scale-105 transition-transform duration-1000 font-sans"
+                 onerror="this.src='https://placehold.co/1920x1080/0284c7/ffffff?text=Kanchanaburi+Travel'">
+            <div class="absolute inset-0 hero-gradient"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6 py-16">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sky-200 text-sm font-medium animate-pulse">
+                <i class="fa-solid fa-map-pin text-amber-400"></i>
+                <span>คู่มือท่องเที่ยวเมืองกาญจน์ ฉบับนักเรียน</span>
+            </div>
+            
+            <h1 class="text-4xl sm:text-6xl font-extrabold font-heading tracking-tight leading-tight">
+                เที่ยวบ้านเรา <br class="sm:hidden">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-teal-200 to-amber-200">
+                    อยากรู้ท่องเที่ยวกาญ
+                </span>
+            </h1>
+
+            <p class="text-xl sm:text-2xl text-sky-100 font-light font-heading">
+                “เปิดโลกการเดินทางในแบบของเรา”
+            </p>
+
+            <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed font-light">
+                ค้นพบสถานที่น่าเที่ยว อาหารอร่อย และเรื่องราวดี ๆ จากท้องถิ่น ผ่านมุมมองของนักเรียน มาร่วมออกเดินทางสัมผัสเสน่ห์กาญจนบุรีไปพร้อมกัน
+            </p>
+
+            <div class="pt-4 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#attractions" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-sky-500 to-emerald-500 text-white font-semibold shadow-lg hover:shadow-sky-500/30 hover:scale-105 transition-all duration-300">
+                    <span>เริ่มสำรวจ</span>
+                    <i class="fa-solid fa-arrow-down-long"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Decorative Bottom Curve -->
+        <div class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-slate-50 to-transparent"></div>
+    </section>
+
+    <!-- ส่วนที่ 3: สถานที่ท่องเที่ยวแนะนำ -->
+    <section id="attractions" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-sky-600 font-semibold text-sm tracking-wider uppercase bg-sky-100 px-3 py-1 rounded-full">Destinations</span>
+            <h2 class="text-3xl sm:text-4xl font-bold font-heading text-slate-800 mt-3 mb-4">
+                สถานที่ท่องเที่ยวแนะนำ
+            </h2>
+            <p class="text-slate-600 text-base sm:text-lg">
+                สัมผัสความงามทางวัฒนธรรม ประวัติศาสตร์ และวิถีชีวิตเมืองกาญจน์ที่เหมาะแก่การเรียนรู้และพักผ่อน
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            <!-- Card 1: วัดญวน -->
+            <div class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl travel-card flex flex-col h-full">
+                <div class="relative h-48 overflow-hidden bg-slate-100">
+                    <img src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80" 
+                         alt="วัดญวนถาวรวราราม" 
+                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                         onerror="this.src='https://placehold.co/600x400/0ea5e9/ffffff?text=Wat+Yuan'">
+                    <span class="absolute top-3 right-3 bg-amber-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-md">
+                        ศิลปะอนัมนิกาย
+                    </span>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-slate-800 font-heading mb-2">1. วัดญวน</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3 mb-4 flex-grow">
+                        วัดญวนถาวรวราราม (วัดขั้ญต๊ก) วัดพุทธศาสนามหายานอนัมนิกายแห่งแรกของเมืองกาญจนบุรี มีสถาปัตยกรรมไทย-เวียดนามที่โดดเด่นและงดงาม
+                    </p>
+                    <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs text-emerald-600 font-medium"><i class="fa-solid fa-star mr-1"></i> สายวัฒนธรรม</span>
+                        <button onclick="openModal('modal-1')" class="text-sky-600 hover:text-sky-700 text-sm font-semibold flex items-center gap-1 group">
+                            ดูรายละเอียด <i class="fa-solid fa-chevron-right text-xs transition-transform group-hover:translate-x-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: วัดเหนือ -->
+            <div class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl travel-card flex flex-col h-full">
+                <div class="relative h-48 overflow-hidden bg-slate-100">
+                    <img src="https://images.unsplash.com/photo-1609766857041-ed402ea8069a?auto=format&fit=crop&w=800&q=80" 
+                         alt="วัดเหนือ" 
+                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                         onerror="this.src='https://placehold.co/600x400/10b981/ffffff?text=Wat+Nuea'">
+                    <span class="absolute top-3 right-3 bg-emerald-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-md">
+                        วัดโบราณเก่าแก่
+                    </span>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-slate-800 font-heading mb-2">2. วัดเหนือ</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3 mb-4 flex-grow">
+                        วัดเทวสังฆาราม หรือวัดเหนือ วัดคู่บ้านคู่เมืองเก่าแก่สร้างสมัยอยุธยาตอนปลาย โดดเด่นด้วยพระอุโบสถและวิหารอันสงบร่มรื่นริมแม่น้ำ
+                    </p>
+                    <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs text-emerald-600 font-medium"><i class="fa-solid fa-landmark mr-1"></i> ประวัติศาสตร์</span>
+                        <button onclick="openModal('modal-2')" class="text-sky-600 hover:text-sky-700 text-sm font-semibold flex items-center gap-1 group">
+                            ดูรายละเอียด <i class="fa-solid fa-chevron-right text-xs transition-transform group-hover:translate-x-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: สะพานข้ามแม่น้ำแคว -->
+            <div class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl travel-card flex flex-col h-full">
+                <div class="relative h-48 overflow-hidden bg-slate-100">
+                    <img src="https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=800&q=80" 
+                         alt="สะพานข้ามแม่น้ำแคว" 
+                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                         onerror="this.src='https://placehold.co/600x400/0284c7/ffffff?text=Bridge+Over+River+Kwai'">
+                    <span class="absolute top-3 right-3 bg-sky-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-md">
+                        แลนด์มาร์กระดับโลก
+                    </span>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-slate-800 font-heading mb-2">3. สะพานข้ามแม่น้ำแคว</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3 mb-4 flex-grow">
+                        อนุสรณ์สถานทางประวัติศาสตร์สมัยสงครามโลกครั้งที่ 2 สัญลักษณ์การท่องเที่ยวของกาญจนบุรีที่เปิดให้นักเรียนเดินชมวิวและถ่ายภาพ
+                    </p>
+                    <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs text-sky-600 font-medium"><i class="fa-solid fa-camera mr-1"></i> จุดถ่ายภาพยอดฮิต</span>
+                        <button onclick="openModal('modal-3')" class="text-sky-600 hover:text-sky-700 text-sm font-semibold flex items-center gap-1 group">
+                            ดูรายละเอียด <i class="fa-solid fa-chevron-right text-xs transition-transform group-hover:translate-x-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: วัดใต้ -->
+            <div class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl travel-card flex flex-col h-full">
+                <div class="relative h-48 overflow-hidden bg-slate-100">
+                    <img src="https://images.unsplash.com/photo-1563492065599-3520f775eeed?auto=format&fit=crop&w=800&q=80" 
+                         alt="วัดใต้" 
+                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                         onerror="this.src='https://placehold.co/600x400/f59e0b/ffffff?text=Wat+Tai'">
+                    <span class="absolute top-3 right-3 bg-amber-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-md">
+                        สิ่งศักดิ์สิทธิ์ริมแม่น้ำ
+                    </span>
+                </div>
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-slate-800 font-heading mb-2">4. วัดใต้</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3 mb-4 flex-grow">
+                        วัดไชยชุมพลชนะสงคราม หรือวัดใต้ ศูนย์รวมจิตใจของชาวเมืองกาญจน์ ตั้งอยู่ริมแม่น้ำแม่กลอง มีพระเจดีย์โบราณและพิพิธภัณฑ์สงคราม
+                    </p>
+                    <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs text-amber-600 font-medium"><i class="fa-solid fa-sun mr-1"></i> บรรยากาศสงบร่มรื่น</span>
+                        <button onclick="openModal('modal-4')" class="text-sky-600 hover:text-sky-700 text-sm font-semibold flex items-center gap-1 group">
+                            ดูรายละเอียด <i class="fa-solid fa-chevron-right text-xs transition-transform group-hover:translate-x-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Modal Details Window Containers ( hidden by default ) -->
+    
+    <!-- Modal 1: วัดญวน -->
+    <div id="modal-1" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onclick="handleOutsideClick(event, 'modal-1')">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl modal-enter relative">
+            <button onclick="closeModal('modal-1')" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors z-10">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="h-60 bg-slate-200 relative">
+                <img src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&q=80" alt="วัดญวน" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+                    <div>
+                        <span class="bg-sky-500 text-white text-xs font-semibold px-2.5 py-1 rounded-md">วัดญวนถาวรวราราม</span>
+                        <h3 class="text-2xl sm:text-3xl font-bold text-white font-heading mt-1">วัดญวน (Khan Tok Temple)</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center gap-4 text-sm text-slate-500 border-b border-slate-100 pb-3">
+                    <span><i class="fa-solid fa-location-dot text-sky-500 mr-1"></i> อ.เมืองกาญจนบุรี</span>
+                    <span><i class="fa-solid fa-clock text-emerald-500 mr-1"></i> เปิด 08:00 - 17:00 น.</span>
+                    <span><i class="fa-solid fa-ticket text-amber-500 mr-1"></i> เข้าชมฟรี</span>
+                </div>
+                <h4 class="font-bold text-slate-800 text-lg">เรื่องราวและจุดเด่นน่าสนใจ</h4>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    วัดญวนถาวรวราราม มีชื่อในภาษาเวียดนามว่า "คั้ญต๊กตื่อ" เป็นวัดในพระพุทธศาสนามหายาน ฝ่ายอนัมนิกาย ตั้งอยู่ริมฝั่งแม่น้ำแม่กลอง ก่อตั้งขึ้นในสมัยพระบาทสมเด็จพระนั่งเกล้าเจ้าอยู่หัว (รัชกาลที่ 3) โดยชาวเวียดนามที่เข้ามาพึ่งพระบรมโพธิสมภาร
+                </p>
+                <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                    <h5 class="font-bold text-sky-900 text-sm mb-1"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i> เกร็ดความรู้สำหรับนักเรียน:</h5>
+                    <p class="text-sky-800 text-xs leading-relaxed">
+                        สถาปัตยกรรมภายในวัดมีความผสมผสานระหว่างศิลปะจีนและเวียดนาม มีอุโบสถทรงสูงงดงาม และมีพระพุทธรูปปางสำคัญให้กราบไหว้ขอพร เป็นแหล่งเรียนรู้ประวัติศาสตร์กลุ่มเชื้อชาติในกาญจนบุรีได้เป็นอย่างดี
+                    </p>
+                </div>
+                <div class="pt-2 text-right">
+                    <button onclick="closeModal('modal-1')" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition-colors">
+                        ปิดหน้าต่าง
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: วัดเหนือ -->
+    <div id="modal-2" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onclick="handleOutsideClick(event, 'modal-2')">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl modal-enter relative">
+            <button onclick="closeModal('modal-2')" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors z-10">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="h-60 bg-slate-200 relative">
+                <img src="https://images.unsplash.com/photo-1609766857041-ed402ea8069a?auto=format&fit=crop&w=1200&q=80" alt="วัดเหนือ" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+                    <div>
+                        <span class="bg-emerald-500 text-white text-xs font-semibold px-2.5 py-1 rounded-md">วัดเทวสังฆาราม</span>
+                        <h3 class="text-2xl sm:text-3xl font-bold text-white font-heading mt-1">วัดเหนือ (Wat Nuea)</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center gap-4 text-sm text-slate-500 border-b border-slate-100 pb-3">
+                    <span><i class="fa-solid fa-location-dot text-emerald-500 mr-1"></i> ต.บ้านเหนือ อ.เมือง</span>
+                    <span><i class="fa-solid fa-clock text-emerald-500 mr-1"></i> เปิด 08:30 - 16:30 น.</span>
+                    <span><i class="fa-solid fa-camera text-sky-500 mr-1"></i> ถ่ายภาพได้</span>
+                </div>
+                <h4 class="font-bold text-slate-800 text-lg">เรื่องราวและจุดเด่นน่าสนใจ</h4>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    วัดเทวสังฆาราม หรือชาวบ้านเรียกว่า "วัดเหนือ" เป็นวัดโบราณสร้างมาตั้งแต่สมัยอยุธยา มีความสำคัญทางประวัติศาสตร์และพระพุทธศาสนาเป็นอย่างมาก ทั้งยังเคยเป็นสถานที่บรรพชาของสมเด็จพระสังฆราชเจ้า กรมหลวงวชิรญาณสังวร (เจริญ สุวฑฺฒโน)
+                </p>
+                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                    <h5 class="font-bold text-emerald-900 text-sm mb-1"><i class="fa-solid fa-landmark text-emerald-600 mr-1"></i> สิ่งน่าสนใจในวัด:</h5>
+                    <p class="text-emerald-800 text-xs leading-relaxed">
+                        พระอุโบสถหลังเก่าที่มีภาพจิตรกรรมฝาผนังอันมีคุณค่า หอพระไตรปิฎกไม้สักโบราณ และบรรยากาศริมน้ำที่เงียบสงบ เหมาะสำหรับศึกษาประวัติศาสตร์และฝึกสมาธิ
+                    </p>
+                </div>
+                <div class="pt-2 text-right">
+                    <button onclick="closeModal('modal-2')" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition-colors">
+                        ปิดหน้าต่าง
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: สะพานข้ามแม่น้ำแคว -->
+    <div id="modal-3" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onclick="handleOutsideClick(event, 'modal-3')">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl modal-enter relative">
+            <button onclick="closeModal('modal-3')" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors z-10">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="h-60 bg-slate-200 relative">
+                <img src="https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=1200&q=80" alt="สะพานข้ามแม่น้ำแคว" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+                    <div>
+                        <span class="bg-sky-600 text-white text-xs font-semibold px-2.5 py-1 rounded-md">Historical Landmark</span>
+                        <h3 class="text-2xl sm:text-3xl font-bold text-white font-heading mt-1">สะพานข้ามแม่น้ำแคว</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center gap-4 text-sm text-slate-500 border-b border-slate-100 pb-3">
+                    <span><i class="fa-solid fa-location-dot text-sky-500 mr-1"></i> ต.ท่ามะขาม อ.เมือง</span>
+                    <span><i class="fa-solid fa-train text-amber-500 mr-1"></i> รถไฟผ่านเป็นเวลา</span>
+                    <span><i class="fa-solid fa-shop text-emerald-500 mr-1"></i> มีร้านค้าชุมชน</span>
+                </div>
+                <h4 class="font-bold text-slate-800 text-lg">เรื่องราวและจุดเด่นน่าสนใจ</h4>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    สะพานข้ามแม่น้ำแควเป็นส่วนหนึ่งของเส้นทางรถไฟสายยุทธศาสตร์ (ทางรถไฟสายมรณะ) สร้างขึ้นในสมัยสงครามโลกครั้งที่ 2 โดยกองทัพญี่ปุ่น เพื่อใช้ขนส่งยุทโธปกรณ์ไปยังประเทศพม่า ปัจจุบันได้รับการบูรณะเป็นสถานที่ท่องเที่ยวสำคัญระดับโลก
+                </p>
+                <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                    <h5 class="font-bold text-sky-900 text-sm mb-1"><i class="fa-solid fa-shield-halved text-sky-600 mr-1"></i> ข้อควรระวังสำหรับนักเรียน:</h5>
+                    <p class="text-sky-800 text-xs leading-relaxed">
+                        ขณะเดินถ่ายภาพบนรางรถไฟ ให้คอยสังเกตสัญญาณเตือนรถไฟ และก้าวเดินอย่างระมัดระวัง ไม่ควรหยอกล้อกันบริเวณขอบสะพานเพื่อความปลอดภัย
+                    </p>
+                </div>
+                <div class="pt-2 text-right">
+                    <button onclick="closeModal('modal-3')" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition-colors">
+                        ปิดหน้าต่าง
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: วัดใต้ -->
+    <div id="modal-4" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onclick="handleOutsideClick(event, 'modal-4')">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl modal-enter relative">
+            <button onclick="closeModal('modal-4')" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors z-10">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="h-60 bg-slate-200 relative">
+                <img src="https://images.unsplash.com/photo-1563492065599-3520f775eeed?auto=format&fit=crop&w=1200&q=80" alt="วัดใต้" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+                    <div>
+                        <span class="bg-amber-600 text-white text-xs font-semibold px-2.5 py-1 rounded-md">วัดไชยชุมพลชนะสงคราม</span>
+                        <h3 class="text-2xl sm:text-3xl font-bold text-white font-heading mt-1">วัดใต้ (Wat Tai)</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex items-center gap-4 text-sm text-slate-500 border-b border-slate-100 pb-3">
+                    <span><i class="fa-solid fa-location-dot text-amber-500 mr-1"></i> ต.บ้านใต้ อ.เมือง</span>
+                    <span><i class="fa-solid fa-clock text-emerald-500 mr-1"></i> เปิด 08:00 - 17:00 น.</span>
+                    <span><i class="fa-solid fa-book-open text-sky-500 mr-1"></i> มีพิพิธภัณฑ์</span>
+                </div>
+                <h4 class="font-bold text-slate-800 text-lg">เรื่องราวและจุดเด่นน่าสนใจ</h4>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    วัดไชยชุมพลชนะสงคราม หรือวัดใต้ เป็นวัดพระอารามหลวงชั้นตรี ตั้งอยู่ริมแม่น้ำแม่กลอง เป็นจุดที่แม่น้ำแควใหญ่และแควน้อยมาบรรจบกัน ในอดีตเป็นค่ายพักทัพเรือของกองทัพไทยก่อนออกศึก จึงได้ชื่อว่า "ชนะสงคราม"
+                </p>
+                <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
+                    <h5 class="font-bold text-amber-900 text-sm mb-1"><i class="fa-solid fa-compass text-amber-600 mr-1"></i> ไฮไลต์น่าชม:</h5>
+                    <p class="text-amber-800 text-xs leading-relaxed">
+                        ชมเรือนแพพิพิธภัณฑ์สงคราม สักการะพระเจดีย์เก่าแก่ และเพลิดเพลินกับบรรยากาศจุดชมวิวสองสีตรงจุดกำเนิดแม่น้ำแม่กลอง
+                    </p>
+                </div>
+                <div class="pt-2 text-right">
+                    <button onclick="closeModal('modal-4')" class="px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition-colors">
+                        ปิดหน้าต่าง
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ส่วนที่ 4: อาหารและของดีประจำถิ่น -->
+    <section id="food" class="py-20 bg-emerald-50/50 border-y border-emerald-100/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-emerald-700 font-semibold text-sm tracking-wider uppercase bg-emerald-100 px-3 py-1 rounded-full">Local Flavors</span>
+                <h2 class="text-3xl sm:text-4xl font-bold font-heading text-slate-800 mt-3 mb-4">
+                    อาหารและของดีประจำถิ่น
+                </h2>
+                <p class="text-slate-600 text-base sm:text-lg">
+                    ลิ้มลองรสชาติอันเป็นเอกลักษณ์และของฝากขึ้นชื่อแห่งเมืองกาญจนบุรีที่ไม่ควรพลาด
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Food 1: เห็ดโคนเมืองกาญจน์ -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <div class="h-48 rounded-xl overflow-hidden mb-5 bg-slate-100">
+                            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" 
+                                 alt="เห็ดโคนเมืองกาญจน์" 
+                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                 onerror="this.src='https://placehold.co/600x400/10b981/ffffff?text=Mushroom'">
+                        </div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-bold text-slate-800 font-heading">1. เห็ดโคนเมืองกาญจน์</h3>
+                            <span class="text-xs bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full font-medium">ของดีตามฤดูกาล</span>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            ขึ้นชื่อเรื่องความหวาน กรอบ และดอกใหญ่ เนื้อแน่น นำมาประกอบอาหารได้หลากหลาย เช่น ต้มยำเห็ดโคน หรือผัดน้ำมันหอย รสชาติอร่อยกลมกล่อมเป็นเอกลักษณ์
+                        </p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 text-xs text-slate-500 font-medium flex items-center gap-1">
+                        <i class="fa-solid fa-utensils text-emerald-500"></i>
+                        <span>จุดเด่น: รสหวานธรรมชาติ เนื้อกรอบแน่น</span>
+                    </div>
+                </div>
+
+                <!-- Food 2: พริกแกงป่าเมืองกาญจน์ -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <div class="h-48 rounded-xl overflow-hidden mb-5 bg-slate-100">
+                            <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80" 
+                                 alt="พริกแกงป่าเมืองกาญจน์" 
+                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                 onerror="this.src='https://placehold.co/600x400/f59e0b/ffffff?text=Curry+Paste'">
+                        </div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-bold text-slate-800 font-heading">2. พริกแกงป่าเมืองกาญจน์</h3>
+                            <span class="text-xs bg-red-100 text-red-800 px-2.5 py-0.5 rounded-full font-medium">รสจัดจ้าน</span>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            เครื่องแกงเผ็ดร้อนโขลกสดจากสมุนไพรท้องถิ่น ทั้งมะกรูด พริกขี้หนูสวน และกระชาย ทำให้อาหารมีกลิ่นหอมชวนรับประทาน ถือเป็นภูมิปัญญาอาหารพื้นบ้าน
+                        </p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 text-xs text-slate-500 font-medium flex items-center gap-1">
+                        <i class="fa-solid fa-pepper-hot text-red-500"></i>
+                        <span>จุดเด่น: กลิ่นหอมสมุนไพร เผ็ดร้อนกำลังดี</span>
+                    </div>
+                </div>
+
+                <!-- Food 3: วุ้นเส้นท่าเรือ -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-all border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <div class="h-48 rounded-xl overflow-hidden mb-5 bg-slate-100">
+                            <img src="https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=800&q=80" 
+                                 alt="วุ้นเส้นท่าเรือ" 
+                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                 onerror="this.src='https://placehold.co/600x400/0ea5e9/ffffff?text=Glass+Noodles'">
+                        </div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-bold text-slate-800 font-heading">3. วุ้นเส้นท่าเรือ</h3>
+                            <span class="text-xs bg-sky-100 text-sky-800 px-2.5 py-0.5 rounded-full font-medium">ของฝากยอดนิยม</span>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            วุ้นเส้นเหนียวนุ่ม ผลิตจากถั่วเขียวแท้ 100% ไม่เปื่อยเละง่าย นำไปทำยำวุ้นเส้น แกงจืด หรือผัดไทยก็อร่อย เหมาะสำหรับซื้อเป็นของฝากกลับบ้าน
+                        </p>
+                    </div>
+                    <div class="pt-3 border-t border-slate-100 text-xs text-slate-500 font-medium flex items-center gap-1">
+                        <i class="fa-solid fa-gift text-sky-500"></i>
+                        <span>จุดเด่น: เส้นเหนียวนุ่ม ผลิตจากถั่วเขียวแท้</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ส่วนที่ 5: เคล็ดลับการท่องเที่ยวอย่างสร้างสรรค์และปลอดภัย -->
+    <section id="tips" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-sky-600 font-semibold text-sm tracking-wider uppercase bg-sky-100 px-3 py-1 rounded-full">Student Travel Tips</span>
+            <h2 class="text-3xl sm:text-4xl font-bold font-heading text-slate-800 mt-3 mb-4">
+                เคล็ดลับการท่องเที่ยวอย่างสร้างสรรค์และปลอดภัย
+            </h2>
+            <p class="text-slate-600 text-base sm:text-lg">
+                คำแนะนำง่าย ๆ สำหรับนักเรียน เพื่อให้การเดินทางสนุก ได้ความรู้ และปลอดภัยตลอดทริป
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Tip 1 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:border-sky-200 transition-colors">
+                <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-xl font-bold mb-4">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 font-heading mb-2">1. เตรียมตัวก่อนเดินทาง</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    วางแผนเส้นทาง ตรวจสอบสภาพอากาศ ชาร์จแบตเตอรี่โทรศัพท์ และเตรียมอุปกรณ์ส่วนตัว เช่น ร่ม หมวก และยาทาป้องกันยุงให้พร้อม
+                </p>
+            </div>
+
+            <!-- Tip 2 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:border-emerald-200 transition-colors">
+                <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-bold mb-4">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 font-heading mb-2">2. ท่องเที่ยวอย่างปลอดภัย</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    เดินทางเป็นกลุ่ม สวมเสื้อชูชีพทุกครั้งเมื่อทำกิจกรรมทางน้ำ คอยสังเกตป้ายเตือน และแจ้งผู้ปกครองหรือครูให้ทราบตำแหน่งเสมอ
+                </p>
+            </div>
+
+            <!-- Tip 3 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:border-amber-200 transition-colors">
+                <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl font-bold mb-4">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 font-heading mb-2">3. รักษาสิ่งแวดล้อม</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    ไม่ทิ้งขยะเปรอะเปื้อน ทิ้งขยะลงถังแยกประเภท พกกระบอกน้ำส่วนตัวเพื่อลดขยะพลาสติก และช่วยกันดูแลธรรมชาติให้งดงาม
+                </p>
+            </div>
+
+            <!-- Tip 4 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:border-indigo-200 transition-colors">
+                <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl font-bold mb-4">
+                    <i class="fa-solid fa-hands-praying"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 font-heading mb-2">4. เคารพวัฒนธรรมท้องถิ่น</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    แต่งกายสุภาพเมื่อเข้าวัดวาอาราม ปฏิบัติตามกฎของสถานที่ พูดจาสุภาพ และอุดหนุนสินค้าของชาวบ้านในชุมชน
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ส่วนที่ 6: ส่วนแนะนำผู้จัดทำ -->
+    <section id="author" class="py-20 bg-slate-900 text-white relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="bg-slate-800/80 backdrop-blur-md rounded-3xl p-8 sm:p-12 border border-slate-700/80 shadow-2xl">
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <!-- Author Avatar Placeholder -->
+                    <div class="flex-shrink-0 text-center">
+                        <div class="w-32 h-32 rounded-full bg-gradient-to-tr from-sky-400 via-teal-300 to-amber-300 p-1 shadow-lg mx-auto">
+                            <div class="w-full h-full rounded-full bg-slate-900 flex items-center justify-center overflow-hidden">
+                                <i class="fa-solid fa-user-graduate text-5xl text-sky-400"></i>
+                            </div>
+                        </div>
+                        <span class="inline-block mt-3 px-3 py-1 bg-sky-500/20 text-sky-300 rounded-full text-xs font-semibold border border-sky-500/30">
+                            นักเรียนผู้จัดทำ
+                        </span>
+                    </div>
+
+                    <!-- Author Info & AI Reflection -->
+                    <div class="space-y-4 text-center md:text-left flex-grow">
+                        <div>
+                            <h2 class="text-2xl sm:text-3xl font-bold font-heading text-white">
+                                ชนะศึก บริสุทธิ์
+                            </h2>
+                            <p class="text-sky-400 text-sm font-medium">
+                                นักเรียนระดับชั้นมัธยมศึกษา | ผู้สนใจเทคโนโลยีและการท่องเที่ยว
+                            </p>
+                        </div>
+
+                        <div class="space-y-3 text-slate-300 text-sm leading-relaxed">
+                            <p>
+                                <strong class="text-slate-100">แนวคิดในการสร้างเว็บไซต์:</strong> 
+                                ตั้งใจสร้างสรรค์เว็บไซต์นี้ขึ้นมาเพื่อเป็นคู่มือท่องเที่ยวฉบับกระทัดรัด สำหรับเพื่อนๆ นักเรียนและเยาวชนที่สนใจศึกษาประวัติศาสตร์ ทัศนศึกษา และสัมผัสวิถีชีวิตท้องถิ่นในจังหวัดกาญจนบุรี
+                            </p>
+                            <p>
+                                <strong class="text-slate-100">สิ่งทีได้เรียนรู้จากการใช้ AI (Prompt Engineering):</strong> 
+                                ได้ฝึกทักษะการออกแบบและเขียนโค้ดด้วยการใช้ Prompt สื่อสารกับ AI ช่วยเรียบเรียงข้อมูล วางโครงสร้างเว็บไซต์ และออกแบบให้รองรับการแสดงผลบนสมาร์ตโฟนได้อย่างเป็นระบบ
+                            </p>
+                        </div>
+
+                        <div class="pt-2 flex flex-wrap gap-2 justify-center md:justify-start">
+                            <span class="text-xs bg-slate-700 text-slate-300 px-3 py-1 rounded-md"><i class="fa-solid fa-code text-sky-400 mr-1"></i> HTML5 & Tailwind</span>
+                            <span class="text-xs bg-slate-700 text-slate-300 px-3 py-1 rounded-md"><i class="fa-solid fa-robot text-emerald-400 mr-1"></i> AI Prompting</span>
+                            <span class="text-xs bg-slate-700 text-slate-300 px-3 py-1 rounded-md"><i class="fa-solid fa-mobile-screen text-amber-400 mr-1"></i> Responsive</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ส่วนที่ 7: Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-800">
+                <div class="text-center md:text-left space-y-1">
+                    <h3 class="text-xl font-bold font-heading text-white">อยากรู้ท่องเที่ยวกาญ</h3>
+                    <p class="text-sm text-slate-400">สร้างสรรค์โดยนักเรียนผู้รักการเดินทาง | ปีการศึกษา 2569</p>
+                </div>
+                
+                <!-- Back to top button -->
+                <button onclick="scrollToTop()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-sky-600 text-slate-200 hover:text-white text-sm font-medium transition-all shadow-md">
+                    <i class="fa-solid fa-arrow-up"></i>
+                    <span>กลับขึ้นด้านบน</span>
+                </button>
+            </div>
+
+            <div class="pt-8 text-center text-xs text-slate-500 space-y-2">
+                <p>ข้อความและภาพประกอบในเว็บไซต์นี้ใช้เพื่อการศึกษาและการเรียนรู้การสร้างเว็บไซต์เท่านั้น</p>
+                <p>© 2569 อยากรู้ท่องเที่ยวกาญ (เที่ยวบ้านเรา) - All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script>
+        
+        // 1. Mobile Hamburger Menu Toggle Functionality
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const hamburgerIcon = document.getElementById('hamburger-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                hamburgerIcon.classList.remove('fa-bars');
+                hamburgerIcon.classList.add('fa-xmark');
+            } else {
+                mobileMenu.classList.add('hidden');
+                hamburgerIcon.classList.remove('fa-xmark');
+                hamburgerIcon.classList.add('fa-bars');
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                hamburgerIcon.classList.remove('fa-xmark');
+                hamburgerIcon.classList.add('fa-bars');
+            });
+        });
+
+        // 2. Modal Controls for Attraction Details
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Disable background scrolling
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore background scrolling
+            }
+        }
+
+        // Close Modal when clicking outside content box
+        function handleOutsideClick(event, modalId) {
+            if (event.target.id === modalId) {
+                closeModal(modalId);
+            }
+        }
+
+        // Close Active Modal on Escape Key Press
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const modals = ['modal-1', 'modal-2', 'modal-3', 'modal-4'];
+                modals.forEach(id => closeModal(id));
+            }
+        });
+
+        // 3. Scroll to Top Function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
